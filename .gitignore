@@ -1,10 +1,10 @@
 .DS_Store
 .ropeproject*
 .cache/
+.ipynb_checkpoints/
 .idea/
 .tox/
 *.egg-info/
-
+*ipynb
 *.json
-
 **/scraped_data
