@@ -13,6 +13,7 @@ VIDEOS_JSON_ID = "videos"
 VIDEOS_JSON_IDENTIFIER = "title"
 VIDEO_JSON_URL = "url"
 
+
 def check_links(videos):
     status_codes = []
     # Check each url's validity
@@ -47,7 +48,7 @@ def get_urls():
 if __name__ == "__main__":
     urls = get_urls()
     status_codes = check_links(urls.items())
-    with open("report-{0}.csv", "w") as f:
+    with open("report.csv", "w") as f:
         writer = csv.writer(f)
         writer.writerow(["title", "url", "status code"])
         writer.writerows(status_codes)
