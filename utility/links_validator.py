@@ -8,7 +8,10 @@ import requests
 
 
 JSON_FOLDER = "../../pyvideo-data/data"
-
+VIDEOS_FOLDER = "videos"
+VIDEOS_JSON_ID = "videos"
+VIDEOS_JSON_IDENTIFIER = "title"
+VIDEO_JSON_URL = "url"
 
 def check_links(videos):
     status_codes = []
@@ -29,13 +32,15 @@ def check_links(videos):
 def get_urls():
     urls = {}
     for folder, dirs, files in os.walk(JSON_FOLDER):
-        if os.path.basename(folder) == "videos":
+        if os.path.basename(folder) == VIDEOS_FOLDER:
             for jf in files:
                 if jf[-5:] == ".json":
                     jsonfile = os.path.join(folder, jf)
                     with open(jsonfile, 'r') as f:
                         vid = json.load(f)
-                        urls[vid["title"]] = [v["url"] for v in vid["videos"]]
+                        urls[vid[VIDEOS_JSON_IDENTIFIER]] = [v[VIDEO_JSON_URL]
+                                                        for v in
+                                                        vid[VIDEOS_JSON_ID]]
     return urls
 
 
