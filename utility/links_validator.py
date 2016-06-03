@@ -5,28 +5,28 @@ import csv
 import json
 import os
 import requests
+from datetime import datetime
 
 
 JSON_FOLDER = "../../pyvideo-data/data"
 VIDEOS_FOLDER = "videos"
 VIDEOS_JSON_ID = "videos"
-VIDEOS_JSON_IDENTIFIER = "title"
 VIDEO_JSON_URL = "url"
 
 
 def check_links(videos):
     status_codes = []
     # Check each url's validity
-    for title, urls in videos:
+    for video_id, urls in videos:
         for url in urls:
             try:
                 print(url)
                 req = requests.head(url)
-                status_codes.append((title, url, req.status_code))
+                status_codes.append((video_id, url, req.status_code))
             except requests.HTTPError as e:
-                status_codes.append((title, url, e.status_code))
+                status_codes.append((video_id, url, e.status_code))
             except requests.ConnectionError as e:
-                status_codes.append((title, url, "ConnectionError"))
+                status_codes.append((video_id, url, "ConnectionError"))
     return status_codes
 
 
@@ -39,16 +39,23 @@ def get_urls():
                     jsonfile = os.path.join(folder, jf)
                     with open(jsonfile, 'r') as f:
                         vid = json.load(f)
-                        urls[vid[VIDEOS_JSON_IDENTIFIER]] = [v[VIDEO_JSON_URL]
+                        urls[vid['category'] + " - " + vid['title']] = [
+                                                        v[VIDEO_JSON_URL]
                                                         for v in
                                                         vid[VIDEOS_JSON_ID]]
     return urls
 
 
-if __name__ == "__main__":
-    urls = get_urls()
-    status_codes = check_links(urls.items())
-    with open("report.csv", "w") as f:
+def generate_report(data):
+    now = datetime.today().strftime("%m_%d_%y_%s")
+    with open("report-{0}.csv".format(now), "w") as f:
         writer = csv.writer(f)
-        writer.writerow(["title", "url", "status code"])
-        writer.writerows(status_codes)
+        columns = ["title", "url", "status code"]
+        writer.writerow(columns)
+        writer.writerows(data)
+
+
+if __name__ == "__main__":
+    urls = get_urls().items()
+    status_codes = check_links(urls)
+    generate_report(status_codes)
