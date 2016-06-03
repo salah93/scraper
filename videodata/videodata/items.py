@@ -8,7 +8,35 @@
 import scrapy
 
 
-class VideodataItem(scrapy.Item):
+class VideoField(scrapy.item.Field):
+    url = scrapy.Field()
+    length = scrapy.Field()
+    video_type = scrapy.Field()
+
+
+class VideoItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    pass
+    category = scrapy.Field()
+    slug = scrapy.Field()
+    title = scrapy.Field()
+    summary = scrapy.Field()
+    description = scrapy.Field()
+    quality_notes = scrapy.Field()
+    language = scrapy.Field()
+    copyright_text = scrapy.Field()
+    thumbnail_url = scrapy.Field()
+    duration = scrapy.Field()
+    videos = VideoField()
+    source_url = scrapy.Field()
+    tags = scrapy.Field()
+    speakers = scrapy.Field()
+    recorded = scrapy.Field()
+
+
+class CategoryItem(scrapy.Item):
+    title = scrapy.Field()
+    description = scrapy.Field()
+    url = scrapy.Field()
+    start_date = scrapy.Field()
+    slug = scrapy.Field()
