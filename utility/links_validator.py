@@ -39,10 +39,9 @@ def get_urls():
                     jsonfile = os.path.join(folder, jf)
                     with open(jsonfile, 'r') as f:
                         vid = json.load(f)
-                        urls[vid['category'] + " - " + vid['title']] = [
-                                                        v[VIDEO_JSON_URL]
-                                                        for v in
-                                                        vid[VIDEOS_JSON_ID]]
+                        identifier = vid['category'] + " - " + vid['title']
+                        urls[identifier] = [v[VIDEO_JSON_URL] for v in
+                                            vid[VIDEOS_JSON_ID]]
     return urls
 
 
